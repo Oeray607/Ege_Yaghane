@@ -1,0 +1,109 @@
+.ege-nav {
+	
+    position: fixed !important;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease-in-out;
+}
+.ege-nav .elementor-icon-list-text {
+  position: relative;
+	display: inline-block;
+}
+.ege-nav .elementor-icon-list-item {
+overflow: visible !important;
+}
+.ege-nav .elementor-icon-list-item .elementor-icon-list-text {
+  color: #2C3E2D !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  letter-spacing: 1.5px !important;
+  transition: all 0.3s ease !important;
+}
+.ege-nav .elementor-icon-list-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #c9a646, #e6c76a);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+
+.ege-nav .elementor-icon-list-item:hover .elementor-icon-list-text {
+	color: #8A9A5B !important;
+}
+
+.ege-nav .elementor-icon-list-item:hover .elementor-icon-list-text::after {
+  transform: scaleX(1);
+}
+
+
+.yag-efekti .elementor-button {
+    position: relative !important;
+    overflow: hidden !important;
+    z-index: 1 !important;
+    border: none !important;
+}
+
+.yag-efekti .elementor-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(transparent, transparent, transparent, #E5C158);
+    animation: yag-donmesi 2.5s linear infinite;
+    z-index: -2;
+}
+
+.yag-efekti .elementor-button::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: #427749; 
+    border-radius: inherit;
+    z-index: -1;
+}
+@keyframes yag-donmesi {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.footer {
+    background: linear-gradient(
+        135deg,
+        #0f1c16,
+        #1f3a2b
+    );
+    padding: 60px 80px;
+}
+@media (max-width: 767px) {
+    .footer {
+        padding: 0px !important;
+    }
+}
+.footer-alt {
+	    background: linear-gradient(
+        135deg,
+        #0f1c16,
+        #1f3a2b
+    );
+}
+.gold_divider_vertical {
+	height:100px;
+	background: repeating-linear-gradient(
+  90deg,
+  rgba(201, 166, 70, 0.08) 0px,
+  rgba(201, 166, 70, 0.08) 2px,
+  transparent 2px,
+  transparent 6px
+);
+}

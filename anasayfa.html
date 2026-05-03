@@ -1,0 +1,205 @@
+<style>
+  .ege-modal-arkaplan {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    left: 0; top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 28, 22, 0.8);
+    backdrop-filter: blur(5px);
+  }
+  .ege-modal-kutu {
+    background-color: #F5F4EE;
+    margin: 10% auto; padding: 30px;
+    width: 80%; max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    max-height: 70vh; overflow-y: auto; 
+  }
+  .ege-modal-kapat {
+    color: #2C3E2D; float: right;
+    font-size: 28px; font-weight: bold; cursor: pointer;
+  }
+  .ege-modal-kapat:hover { color: #8A9A5B; }
+  #ege-modal-baslik { color: #2C3E2D; margin-top:0; border-bottom: 2px solid #e6c76a; padding-bottom:10px;}
+  #ege-modal-icerik { color: #3a3a3a; font-size: 14px; line-height: 1.6; margin-top:15px;}
+  
+ .menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(3px);
+  z-index: 9998;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.menu-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+body.menu-open {
+  overflow: hidden;
+}
+
+</style>
+
+<div id="ege-modal" class="ege-modal-arkaplan">
+  <div class="ege-modal-kutu">
+    <span class="ege-modal-kapat">&times;</span>
+    <h3 id="ege-modal-baslik">Başlık </h3>
+    <div id="ege-modal-icerik">İçerik </div>
+  </div>
+</div>
+
+<script>
+const modalVerileri = {
+"#kvkk": {
+    baslik: "KVKK Aydınlatma Metni",
+    icerik: `
+      <p><strong>Ege Yağhane Kişisel Verilerin Korunması ve İşlenmesi Aydınlatma Metni</strong></p>
+      <p>Ege Yağhane olarak, müşterilerimizin, potansiyel müşterilerimizin ve web sitemizi ziyaret eden tüm şahısların kişisel verilerinin güvenliğine ve gizliliğine en üst düzeyde önem vermekteyiz. Bu hassasiyetle, 6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”) uyarınca, veri sorumlusu sıfatıyla kişisel verilerinizi aşağıda açıklanan şartlarda ve mevzuatta öngörülen sınırlar dahilinde işlemekteyiz.</p>
+      
+      <p><strong>1. Kişisel Verilerin Toplanması ve İşlenme Amacı</strong><br>
+      Web sitemiz üzerinden sipariş oluşturmanız, iletişim formlarını doldurmanız veya bültenimize üye olmanız durumunda; adınız, soyadınız, iletişim bilgileriniz (telefon, e-posta), teslimat ve fatura adresleriniz toplanmaktadır. Bu veriler; siparişlerinizin size sorunsuz ulaştırılması, faturalandırma süreçlerinin yürütülmesi, talep halinde müşteri desteği sağlanması ve yasal yükümlülüklerimizin (Tüketici Kanunu vb.) yerine getirilmesi amacıyla işlenmektedir.</p>
+      
+      <p><strong>2. Kişisel Verilerin Aktarılması</strong><br>
+      Toplanan kişisel verileriniz, siparişlerinizin teslimatı için anlaşmalı olduğumuz kargo şirketleriyle ve ödeme işlemlerinin güvenli bir şekilde gerçekleşmesi için BDDK lisanslı ödeme kuruluşlarıyla, yalnızca hizmetin ifası amacıyla sınırlı olmak kaydıyla paylaşılmaktadır. Verileriniz kesinlikle üçüncü şahıslara satılmaz veya ticari amaçla izinsiz devredilmez.</p>
+      
+      <p><strong>3. Veri Sahibinin Hakları</strong><br>
+      KVKK’nın 11. maddesi uyarınca veri sahipleri; kişisel verilerinin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, eksik veya yanlış işlenmişse düzeltilmesini isteme ve kanuni şartlar gerçekleştiğinde silinmesini veya yok edilmesini talep etme haklarına sahiptir. Taleplerinizi <strong>info@egeyaghane.com</strong> adresi üzerinden bize iletebilirsiniz.</p>
+    `
+  },
+"#gizlilik": {
+    baslik: "Gizlilik ve Güvenlik Politikası",
+    icerik: `
+      <p><strong>Ege Yağhane Gizlilik ve Güvenlik Politikası</strong></p>
+      <p>Bu politika, Ege Yağhane web sitesini ziyaret eden kullanıcıların bilgi güvenliğini sağlamak amacıyla hazırlanmıştır.</p>
+      
+      <p><strong>Bilgi Güvenliği ve SSL Sertifikası</strong><br>
+      Web sitemizde, bilgi kaybını, bilginin izinsiz kullanımını ve yetkisiz değiştirilmesini engellemek için üst düzey güvenlik önlemleri uygulanmaktadır. Sitemiz veri transferi sırasında 256-bit SSL (Secure Sockets Layer) şifreleme teknolojisi ile korunmaktadır. Ödeme sayfasında istenen kredi kartı bilgileriniz, sitemizden bağımsız olarak doğrudan ödeme altyapısı sağlayan bankanın veya lisanslı ödeme kuruluşunun güvenli sunucularında işlenir. <strong>Kredi kartı bilgileriniz Ege Yağhane sunucularında kesinlikle saklanmaz ve tarafımızca görülmez.</strong></p>
+      
+      <p><strong>Çerezler (Cookies)</strong><br>
+      Sitemizi daha kolay ve kişiselleştirilmiş bir şekilde kullanabilmeniz (Örn: sepetinizdeki ürünlerin hatırlanması) için çerezler (cookies) kullanılmaktadır. Tarayıcı ayarlarınızdan çerezleri dilediğiniz zaman kapatabilirsiniz.</p>
+      
+      <p><strong>İletişim ve E-Bülten</strong><br>
+      Bizimle paylaştığınız e-posta adresi ve telefon numarası, siparişinizle ilgili kritik bilgilendirmeler (kargo takip vb.) için kullanılır. Yalnızca açık onayınız olması durumunda indirim ve kampanyalardan haberdar edilmek üzere tarafınıza e-posta veya SMS gönderilebilir. İleti almak istemediğinizde tek tıkla abonelikten ayrılma hakkınız bulunmaktadır.</p>
+    `
+  },
+"#iade": {
+    baslik: "İade Politikamız",
+    icerik: `
+      <p><strong>Ege Yağhane İade ve İptal Şartları</strong></p>
+      <p>Müşteri memnuniyeti bizim için her şeyden önde gelir. Ancak sattığımız ürünlerin "Gıda" kategorisinde olması sebebiyle, insan sağlığını ve hijyeni korumak adına yasal çerçevede bazı özel şartlar bulunmaktadır.</p>
+      
+      <p><strong>Cayma Hakkı ve İade Şartları</strong><br>
+      Tüketicinin Korunması Hakkında Kanun gereği, siparişinizin size teslim edildiği tarihten itibaren <strong>14 gün içinde</strong> hiçbir gerekçe göstermeksizin iade hakkınız bulunmaktadır. <strong>Ancak; zeytinyağı ve benzeri gıda ürünlerinde iadenin kabul edilebilmesi için ürünün ambalajının kesinlikle açılmamış, güvenlik bandının koparılmamış ve ürünün orijinalliğinin bozulmamış olması şarttır.</strong> Kapağı açılmış veya kullanılmış gıda ürünleri yasa gereği iade alınamaz.</p>
+      
+      <p><strong>Kargoda Hasar Gören Ürünler</strong><br>
+      Siparişiniz kargo görevlisi tarafından size teslim edildiğinde, kutuyu görevlinin yanında açarak kontrol etmeniz rica olunur. Teneke veya şişelerde ezilme, patlama veya sızdırma gibi kargo kaynaklı bir hasar tespit ederseniz, lütfen ürünü teslim almayarak kargo görevlisine <strong>"Hasar Tespit Tutanağı"</strong> tutturunuz ve anında bizimle iletişime geçiniz. Tutanak tutulan ürünlerin değişimi veya iadesi derhal yapılacaktır.</p>
+      
+      <p><strong>İade Süreci ve Ücret İadesi</strong><br>
+      İade taleplerinizi info@egeyaghane.com adresine veya müşteri hizmetleri numaramıza iletebilirsiniz. Onaylanan iadelerde, ürünlerin depomuza sağlam bir şekilde ulaşmasını takip eden 3 ila 7 iş günü içerisinde ödediğiniz tutar, ödeme yaptığınız karta/hesaba kesintisiz olarak iade edilir.</p>
+    `
+  },
+"#hizmet": {
+    baslik: "Hizmet Standartlarımız",
+    icerik: `
+      <p><strong>Ege Yağhane Kalite ve Hizmet Standartları</strong></p>
+      <p>Asırlık zeytin ağaçlarının bereketini, en doğal ve saf haliyle sofralarınıza taşımak Ege Yağhane'nin en temel vizyonudur.</p>
+      
+      <p><strong>Üretim ve Doğallık Garantisi</strong><br>
+      Satışa sunduğumuz tüm zeytinyağlarımız, erken hasat ve soğuk sıkım prensiplerine uygun olarak, zeytinin içerisindeki fenolik bileşenler ve vitaminler korunarak üretilmektedir. Ürünlerimizde hiçbir koruyucu, katkı maddesi veya kimyasal işleme yer verilmez.</p>
+      
+      <p><strong>Paketleme ve Kargo Standartları</strong><br>
+      Ürünlerimizin sizlere ilk günkü tazeliğinde ulaşması için, ışık ve ısı geçirmeyen özel tenekelerde veya koyu renkli cam şişelerde dolum yapıyoruz. Kargolama sürecinde ezilme ve kırılmalara karşı hava yastıklı özel koruma kılıfları ve dayanıklı koliler kullanarak ürün güvenliğini maksimuma çıkarıyoruz.</p>
+      
+      <p><strong>Müşteri İletişimi</strong><br>
+      Sipariş öncesi ve sonrası tüm sorularınız, zeytinyağı tadımı hakkındaki merak ettikleriniz veya önerileriniz için WhatsApp destek hattımız üzerinden mesai saatleri içerisinde bize doğrudan ulaşabilirsiniz. Sizin sofranızdaki tebessüm, bizim en büyük referansımızdır.</p>
+    `
+  }
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+  const modal = document.getElementById("ege-modal");
+  const baslikAlani = document.getElementById("ege-modal-baslik");
+  const icerikAlani = document.getElementById("ege-modal-icerik");
+  const kapatButonu = document.querySelector(".ege-modal-kapat");
+
+
+  const tumLinkler = document.querySelectorAll('a[href^="#"]');
+
+  tumLinkler.forEach(function(link) {
+    link.addEventListener("click", function(e) {
+      const tiklananLink = this.getAttribute("href");
+      if (modalVerileri[tiklananLink]) {
+        e.preventDefault();
+        
+        baslikAlani.innerText = modalVerileri[tiklananLink].baslik;
+        icerikAlani.innerHTML = modalVerileri[tiklananLink].icerik;
+
+
+        modal.style.display = "block";
+      }
+    });
+  });
+
+
+  if (kapatButonu) {
+    kapatButonu.addEventListener("click", function() {
+      modal.style.display = "none";
+    });
+  }
+
+
+  window.addEventListener("click", function(e) {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+
+
+
+  const accordion = document.querySelector(".e-n-accordion");
+  if (!accordion) return;
+
+  const overlay = document.createElement("div");
+  overlay.classList.add("menu-overlay");
+  document.body.appendChild(overlay);
+
+  const details = accordion.querySelector("details");
+
+  details.addEventListener("toggle", function(){
+    if(details.hasAttribute("open")){
+      overlay.classList.add("active");
+      document.body.classList.add("menu-open");
+    } else {
+      overlay.classList.remove("active");
+      document.body.classList.remove("menu-open");
+    }
+  });
+
+  accordion.querySelectorAll(".elementor-icon-list-item a").forEach(function(link){
+    link.addEventListener("click", function(){
+      setTimeout(closeMenu, 150);
+    });
+  });
+
+  overlay.addEventListener("click", closeMenu);
+
+  function closeMenu(){
+    details.removeAttribute("open");
+    overlay.classList.remove("active");
+    document.body.classList.remove("menu-open");
+  }
+
+});
+</script>
